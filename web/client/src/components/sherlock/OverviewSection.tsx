@@ -41,43 +41,44 @@ export function OverviewSection({ data }: OverviewSectionProps) {
   };
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-4 animate-fade-in">
       {/* Hero Stats */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-3">
         {stats.map((s) => (
-          <div key={s.label} className="surface-card p-6">
+          <div key={s.label} className="surface-card p-4">
             <div className="flex items-center justify-between">
-              <p className="text-label">{s.label}</p>
-              <s.icon className="w-4 h-4 text-muted-foreground" />
+              <p className="text-label text-[10px] sm:text-xs">{s.label}</p>
+              <s.icon className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground" />
             </div>
-            <p className="text-3xl font-mono-data font-light tracking-tighter mt-4">{s.value}</p>
+            <p className="text-xl sm:text-3xl font-mono-data font-light tracking-tighter mt-3">{s.value}</p>
           </div>
         ))}
       </div>
 
       {/* Fee Rates */}
-      <div className="surface-card p-6">
-        <p className="text-label mb-4">FEE_RATE_STATS (sat/vB)</p>
-        <div className="grid grid-cols-4 gap-4">
+      <div className="surface-card p-4">
+        <p className="text-label mb-3">FEE_RATE_STATS (sat/vB)</p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {feeStats.map((f) => (
-            <div key={f.label} className="flex items-center gap-3">
-              <f.icon className="w-4 h-4 text-muted-foreground" />
+            <div key={f.label} className="flex items-center gap-2">
+              <f.icon className="w-4 h-4 text-muted-foreground shrink-0" />
               <div>
                 <p className="text-label">{f.label}</p>
-                <p className="text-xl font-mono-data tracking-tight">{f.value}</p>
+                <p className="text-lg sm:text-xl font-mono-data tracking-tight">{f.value}</p>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      {/* Charts: stack on mobile, side-by-side on md+ */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Script Distribution Chart */}
-        <div className="surface-card p-6">
-          <p className="text-label mb-4">SCRIPT_TYPE_DISTRIBUTION</p>
+        <div className="surface-card p-4">
+          <p className="text-label mb-3">SCRIPT_TYPE_DISTRIBUTION</p>
           <p className="text-xs text-muted-foreground mb-2">{scriptData.length} types</p>
-          <ResponsiveContainer width="100%" height={280}>
-            <BarChart data={scriptData} layout="vertical" margin={{ left: 70, right: 20 }} style={{ background: 'transparent' }}>
+          <ResponsiveContainer width="100%" height={240}>
+            <BarChart data={scriptData} layout="vertical" margin={{ left: 60, right: 16 }} style={{ background: 'transparent' }}>
               <XAxis
                 type="number"
                 stroke="#262626"
@@ -89,7 +90,7 @@ export function OverviewSection({ data }: OverviewSectionProps) {
                 dataKey="name"
                 stroke="#262626"
                 tick={{ fill: "#a1a1aa", fontSize: 10, fontFamily: "'Geist Mono', monospace" }}
-                width={65}
+                width={55}
               />
               <Tooltip
                 contentStyle={{
@@ -112,19 +113,19 @@ export function OverviewSection({ data }: OverviewSectionProps) {
         </div>
 
         {/* Heuristics Applied */}
-        <div className="surface-card p-6">
-          <p className="text-label mb-4">HEURISTICS_APPLIED</p>
+        <div className="surface-card p-4">
+          <p className="text-label mb-3">HEURISTICS_APPLIED</p>
           <div className="flex flex-wrap gap-2">
             {summary.heuristics_applied.map((h) => (
               <span
                 key={h}
-                className={`px-3 py-1.5 text-xs font-mono-data border ${heuristicColors[h] || "border-border bg-secondary text-foreground"}`}
+                className={`px-2 py-1 text-xs font-mono-data border ${heuristicColors[h] || "border-border bg-secondary text-foreground"}`}
               >
                 {h.toUpperCase()}
               </span>
             ))}
           </div>
-          <div className="mt-6 space-y-2">
+          <div className="mt-4 space-y-2">
             <p className="text-label">ANALYSIS_STATS</p>
             <div className="grid grid-cols-2 gap-2">
               <div className="flex justify-between px-3 py-2 bg-secondary text-sm">

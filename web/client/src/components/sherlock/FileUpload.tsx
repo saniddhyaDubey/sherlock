@@ -46,28 +46,32 @@ export function FileUpload({ onAnalysisComplete }: FileUploadProps) {
   };
 
   return (
-    <div className="surface-card p-6 mb-6">
+    <div className="surface-card p-4 mb-4">
       <p className="text-label mb-4">ANALYZE_NEW_BLOCK</p>
-      <div className="grid grid-cols-3 gap-4 mb-4">
-        <div>
-          <p className="text-label mb-2">BLK_FILE</p>
-          <input ref={blkRef} type="file" accept=".dat"
-            className="w-full text-sm font-mono-data text-muted-foreground bg-secondary border border-border px-3 py-2 cursor-pointer file:mr-3 file:py-1 file:px-3 file:border file:border-border file:bg-background file:text-foreground file:text-xs file:font-mono-data file:cursor-pointer" />
-        </div>
-        <div>
-          <p className="text-label mb-2">REV_FILE</p>
-          <input ref={revRef} type="file" accept=".dat"
-            className="w-full text-sm font-mono-data text-muted-foreground bg-secondary border border-border px-3 py-2 cursor-pointer file:mr-3 file:py-1 file:px-3 file:border file:border-border file:bg-background file:text-foreground file:text-xs file:font-mono-data file:cursor-pointer" />
-        </div>
-        <div>
-          <p className="text-label mb-2">XOR_FILE</p>
-          <input ref={xorRef} type="file" accept=".dat"
-            className="w-full text-sm font-mono-data text-muted-foreground bg-secondary border border-border px-3 py-2 cursor-pointer file:mr-3 file:py-1 file:px-3 file:border file:border-border file:bg-background file:text-foreground file:text-xs file:font-mono-data file:cursor-pointer" />
-        </div>
+      {/* Stack on mobile, 3-col on sm+ */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+        {[
+          { label: "BLK_FILE", ref: blkRef },
+          { label: "REV_FILE", ref: revRef },
+          { label: "XOR_FILE", ref: xorRef },
+        ].map(({ label, ref }) => (
+          <div key={label}>
+            <p className="text-label mb-2">{label}</p>
+            <input
+              ref={ref}
+              type="file"
+              accept=".dat"
+              className="w-full text-sm font-mono-data text-muted-foreground bg-secondary border border-border px-3 py-2 cursor-pointer file:mr-3 file:py-1 file:px-3 file:border file:border-border file:bg-background file:text-foreground file:text-xs file:font-mono-data file:cursor-pointer"
+            />
+          </div>
+        ))}
       </div>
-      <div className="flex items-center gap-4">
-        <button onClick={handleAnalyze} disabled={uploading}
-          className="flex items-center gap-2 border border-foreground px-4 py-2 text-sm font-medium hover:bg-foreground hover:text-background transition-colors disabled:opacity-50">
+      <div className="flex flex-wrap items-center gap-3">
+        <button
+          onClick={handleAnalyze}
+          disabled={uploading}
+          className="flex items-center gap-2 border border-foreground px-4 py-2 text-sm font-medium hover:bg-foreground hover:text-background transition-colors disabled:opacity-50"
+        >
           {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
           {uploading ? "ANALYZING..." : "RUN_ANALYSIS"}
         </button>

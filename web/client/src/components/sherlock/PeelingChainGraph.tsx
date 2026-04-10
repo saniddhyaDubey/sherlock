@@ -66,11 +66,11 @@ export function PeelingChainGraph({ chain, onClose }: Props) {
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-auto">
         <svg
           width="900"
           height={Math.max(800, revealed * (NODE_H + V_GAP) + 300)}
-          style={{ display: "block", margin: "0 auto" }}
+          style={{ display: "block", margin: "0 auto", minWidth: "900px" }}
         >
           {edges.map((edge, i) => {
             const from = nodes.find(n => n.id === edge.from);

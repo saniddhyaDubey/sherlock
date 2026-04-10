@@ -26,7 +26,7 @@ const Index = () => {
         availableFiles={availableFiles}
       />
 
-      <main className="p-6 max-w-[1600px] mx-auto">
+      <main className="p-3 sm:p-6 max-w-[1600px] mx-auto">
         <HowToUse />
         <FileUpload onAnalysisComplete={setUploadedData} />
 

@@ -33,9 +33,9 @@ export function TransactionModal({ heuristicKey, heuristicName, transactions, on
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
-      <div className="surface-card w-full max-w-4xl max-h-[85vh] flex flex-col m-4">
+      <div className="surface-card w-full max-w-4xl max-h-[90vh] flex flex-col m-2 sm:m-4">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-border">
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-border">
           <div>
             <p className="text-label">HEURISTIC // {heuristicKey.toUpperCase()}</p>
             <h2 className="text-lg font-medium tracking-tight mt-1">{heuristicName}</h2>
@@ -49,7 +49,7 @@ export function TransactionModal({ heuristicKey, heuristicName, transactions, on
         </div>
 
         {/* Search */}
-        <div className="px-6 py-3 border-b border-border">
+        <div className="px-4 sm:px-6 py-3 border-b border-border">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
@@ -63,7 +63,7 @@ export function TransactionModal({ heuristicKey, heuristicName, transactions, on
         </div>
 
         {/* List */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-2">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-2">
           {pageData.map((tx) => {
             const hData = tx.heuristics[heuristicKey as keyof typeof tx.heuristics];
             return (
@@ -115,7 +115,7 @@ export function TransactionModal({ heuristicKey, heuristicName, transactions, on
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between px-6 py-3 border-t border-border">
+          <div className="flex items-center justify-between px-4 sm:px-6 py-3 border-t border-border">
             <button
               onClick={() => setPage(Math.max(0, page - 1))}
               disabled={page === 0}

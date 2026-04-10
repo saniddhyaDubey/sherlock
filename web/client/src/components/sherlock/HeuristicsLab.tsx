@@ -89,7 +89,7 @@ export function HeuristicsLab({ data }: HeuristicsLabProps) {
         {!selected ? (
           <motion.div
             key="grid"
-            className="grid grid-cols-3 gap-4"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -107,7 +107,7 @@ export function HeuristicsLab({ data }: HeuristicsLabProps) {
         ) : (
           <motion.div
             key="expanded"
-            className="grid grid-cols-[2fr_1fr] gap-4"
+            className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -136,7 +136,7 @@ export function HeuristicsLab({ data }: HeuristicsLabProps) {
 
               <p className="text-sm text-muted-foreground leading-relaxed">{selectedDef?.description}</p>
 
-              <div className="flex gap-8">
+              <div className="flex gap-6 flex-wrap">
                 <div>
                   <p className="text-label">FLAGGED</p>
                   <p className="text-4xl font-mono-data font-light tracking-tighter mt-1">
@@ -170,7 +170,7 @@ export function HeuristicsLab({ data }: HeuristicsLabProps) {
             </motion.div>
 
             {/* Sidebar cards */}
-            <div className="space-y-2 overflow-y-auto max-h-[700px]">
+            <div className="space-y-2 overflow-y-auto max-h-[400px] lg:max-h-[700px]">
               {heuristics
                 .filter((h) => h.key !== selected)
                 .map((h) => (
