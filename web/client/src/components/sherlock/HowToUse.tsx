@@ -21,6 +21,7 @@ export function HowToUse() {
           <div>
             <p className="text-foreground font-medium mb-1">MODE_2: Live analysis (upload your own)</p>
             <p>Upload your own raw Bitcoin block files (.dat format) using the three file inputs below. Click RUN_ANALYSIS to trigger the full C++ chain analysis engine in real time. Analysis takes 30-60 seconds depending on block size.</p>
+            <p className="mt-2 text-yellow-400/80">⚠ FILE_SIZE_LIMIT: Each file must be under 20MB. The live engine runs on a free-tier server with 512MB RAM — large block files will exceed memory and fail. For best results, use a single-block .dat file (~2–5MB). The pre-analyzed fixtures (blk04330, blk05051) are already available in MODE_1 above.</p>
           </div>
           <div>
             <p className="text-foreground font-medium mb-1">EXPLORING_RESULTS</p>
