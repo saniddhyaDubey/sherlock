@@ -4,10 +4,15 @@ const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const os = require('os');
-const { exec } = require('child_process');
+const { spawn } = require('child_process');
 
-// Store uploads in temp directory
-const upload = multer({ dest: os.tmpdir() });
+const MAX_FILE_MB = 20;
+
+// Store uploads in temp directory, limit file size to avoid OOM on free tier
+const upload = multer({
+    dest: os.tmpdir(),
+    limits: { fileSize: MAX_FILE_MB * 1024 * 1024 }
+});
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -48,12 +53,21 @@ app.get('/api/results/:stem', (req, res) => {
     }
 });
 
-// Replace existing /api/analyze with this:
-app.post('/api/analyze', upload.fields([
-    { name: 'blk', maxCount: 1 },
-    { name: 'rev', maxCount: 1 },
-    { name: 'xor', maxCount: 1 }
-]), (req, res) => {
+app.post('/api/analyze', (req, res, next) => {
+    upload.fields([
+        { name: 'blk', maxCount: 1 },
+        { name: 'rev', maxCount: 1 },
+        { name: 'xor', maxCount: 1 }
+    ])(req, res, (err) => {
+        if (err) {
+            if (err.code === 'LIMIT_FILE_SIZE') {
+                return res.status(413).json({ ok: false, error: { code: 'FILE_TOO_LARGE', message: `Each file must be under ${MAX_FILE_MB}MB. Upload smaller block files for live analysis.` } });
+            }
+            return res.status(400).json({ ok: false, error: { code: 'UPLOAD_ERROR', message: err.message } });
+        }
+        next();
+    });
+}, (req, res) => {
     const files = req.files;
     if (!files?.blk || !files?.rev || !files?.xor) {
         return res.status(400).json({ ok: false, error: { code: 'INVALID_ARGS', message: 'blk, rev, xor files required' } });
@@ -63,22 +77,35 @@ app.post('/api/analyze', upload.fields([
     const revPath = files.rev[0].path;
     const xorPath = files.xor[0].path;
 
-    const cmd = `./block_parser --ui ${blkPath} ${revPath} ${xorPath}`;
-    exec(cmd, { cwd: path.join(__dirname, '..'), maxBuffer: 1024 * 1024 * 50 }, (error, stdout, stderr) => {
-        // cleanup temp files
-        fs.unlinkSync(blkPath);
-        fs.unlinkSync(revPath);
-        fs.unlinkSync(xorPath);
+    const cleanup = () => {
+        [blkPath, revPath, xorPath].forEach(f => { try { fs.unlinkSync(f); } catch (_) {} });
+    };
 
-        if (error && !stdout) {
-            return res.status(500).json({ ok: false, error: { code: 'EXEC_ERROR', message: error.message } });
+    const proc = spawn('./block_parser', ['--ui', blkPath, revPath, xorPath], {
+        cwd: path.join(__dirname, '..')
+    });
+
+    const chunks = [];
+    proc.stdout.on('data', (d) => chunks.push(d));
+    proc.stderr.on('data', () => {}); // suppress stderr noise
+
+    proc.on('close', (code) => {
+        cleanup();
+        const stdout = Buffer.concat(chunks).toString('utf8');
+        if (!stdout && code !== 0) {
+            return res.status(500).json({ ok: false, error: { code: 'EXEC_ERROR', message: 'Analyzer exited with no output' } });
         }
         try {
             const result = JSON.parse(stdout);
             res.json(result);
         } catch (err) {
-            res.status(500).json({ ok: false, error: { code: 'PARSE_ERROR', message: 'Failed to parse CLI output' } });
+            res.status(500).json({ ok: false, error: { code: 'PARSE_ERROR', message: 'Failed to parse analyzer output' } });
         }
+    });
+
+    proc.on('error', (err) => {
+        cleanup();
+        res.status(500).json({ ok: false, error: { code: 'SPAWN_ERROR', message: err.message } });
     });
 });
 
