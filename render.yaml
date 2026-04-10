@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: sherlock
+    runtime: node
+    buildCommand: >
+      apt-get install -y g++ &&
+      g++ -std=c++17 -O3 parser/main.cpp -o block_parser &&
+      cd web && npm install &&
+      cd client && npm install && npm run build
+    startCommand: node web/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
