@@ -64,9 +64,6 @@ function getTransactionsForHeuristic(data: AnalysisResult, key: HeuristicKey): T
 }
 
 export function HeuristicsLab({ data }: HeuristicsLabProps) {
-  console.log("data:", data);
-  console.log("peeling_chains:", data?.peeling_chains);
-
   const [selected, setSelected] = useState<HeuristicKey | null>(null);
   const [modalHeuristic, setModalHeuristic] = useState<HeuristicKey | null>(null);
 
