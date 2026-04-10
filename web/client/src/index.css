@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 4%;
+    --foreground: 0 0% 100%;
+
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 4%;
+
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 0 0% 15%;
+    --muted-foreground: 240 5% 65%;
+
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 0 0% 100%;
+
+    --radius: 0.375rem;
+
+    --surface: 0 0% 8%;
+    --surface-raised: 0 0% 12%;
+    --border-hover: 0 0% 25%;
+
+    /* Classification tokens */
+    --coinjoin: 270 60% 60%;
+    --consolidation: 25 80% 55%;
+    --self-transfer: 220 60% 55%;
+    --simple-payment: 140 50% 55%;
+    --batch-payment: 50 80% 55%;
+    --unknown: 0 0% 45%;
+
+    --sidebar-background: 0 0% 6%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 0 0% 100%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 0 0% 12%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 0 0% 100%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  }
+
+  /* Thin dark scrollbars */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground));
+  }
+}
+
+@layer utilities {
+  .font-mono-data {
+    font-family: 'Geist Mono', 'SF Mono', 'Fira Code', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .text-label {
+    @apply text-[10px] uppercase tracking-[0.05em] text-muted-foreground font-medium;
+  }
+
+  .text-data {
+    @apply text-sm font-mono-data;
+  }
+
+  .surface-card {
+    @apply bg-card border border-border;
+  }
+
+  .surface-card-hover {
+    @apply surface-card transition-colors hover:border-[hsl(var(--border-hover))];
+  }
+
+  .badge-coinjoin {
+    @apply bg-[hsl(var(--coinjoin)/0.1)] text-[hsl(var(--coinjoin))] border border-[hsl(var(--coinjoin)/0.2)];
+  }
+  .badge-consolidation {
+    @apply bg-[hsl(var(--consolidation)/0.1)] text-[hsl(var(--consolidation))] border border-[hsl(var(--consolidation)/0.2)];
+  }
+  .badge-self-transfer {
+    @apply bg-[hsl(var(--self-transfer)/0.1)] text-[hsl(var(--self-transfer))] border border-[hsl(var(--self-transfer)/0.2)];
+  }
+  .badge-simple-payment {
+    @apply bg-[hsl(var(--simple-payment)/0.1)] text-[hsl(var(--simple-payment))] border border-[hsl(var(--simple-payment)/0.2)];
+  }
+  .badge-batch-payment {
+    @apply bg-[hsl(var(--batch-payment)/0.1)] text-[hsl(var(--batch-payment))] border border-[hsl(var(--batch-payment)/0.2)];
+  }
+  .badge-unknown {
+    @apply bg-[hsl(var(--unknown)/0.1)] text-[hsl(var(--unknown))] border border-[hsl(var(--unknown)/0.2)];
+  }
+}

@@ -1,0 +1,10 @@
+fixtures/*.dat
+fixtures/*.dat.gz
+node_modules/
+web/node_modules/
+web/client/node_modules/
+__pycache__/
+target/
+.env
+block_parser
+.DS_Store
